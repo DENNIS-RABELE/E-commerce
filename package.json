@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev:web": "vite --config \"React App/vite.config.js\" --host 127.0.0.1 --port 5173",
-    "dev:mobile": "vite --config \"Client/vite.config.js\" --host 127.0.0.1 --port 5174",
+    "dev:client": "vite --config \"Client/vite.config.js\" --host 127.0.0.1 --port 5174",
     "dev:admin": "vite --config \"Admin/vite.config.js\" --host 127.0.0.1 --port 5175",
     "build:web": "vite build --config \"React App/vite.config.js\"",
-    "build:mobile": "vite build --config \"Client/vite.config.js\"",
+    "build:client": "vite build --config \"Client/vite.config.js\"",
     "build:admin": "vite build --config \"Admin/vite.config.js\"",
     "firebase:login": "firebase login --no-localhost",
     "firebase:deploy-rules": "firebase deploy --only firestore:rules,storage --project ict-ecommerce",

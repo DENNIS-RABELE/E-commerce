@@ -1,6 +1,6 @@
 {
-  "name": "ICT Commerce Customer App",
-  "short_name": "ICT Customer",
+  "name": "ICT Commerce Customer Web App",
+  "short_name": "ICT Web",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#F8FAFC",

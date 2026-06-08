@@ -1,11 +1,10 @@
-const CACHE_NAME = "ict-commerce-mobile-v1";
+const CACHE_NAME = "ict-commerce-client-web-v1";
 const ASSETS = [
   "index.html",
-  "mobile-login.html",
-  "mobile.css",
-  "mobile.js",
+  "styles.css",
+  "client.js",
   "manifest.webmanifest",
-  "assets/mobile-suite.svg",
+  "assets/customer-suite.svg",
   "assets/icon.svg"
 ];
 

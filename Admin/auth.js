@@ -36,6 +36,11 @@ function initializeForms() {
       return;
     }
 
+    if (accounts.some((account) => account.email === details.email)) {
+      notify("error", "Registration unsuccessful: an admin with this Gmail address already exists.");
+      return;
+    }
+
     const admin = {
       id: `admin-${Date.now()}`,
       firstName: details.firstName,
@@ -65,13 +70,13 @@ function initializeForms() {
       } catch (error) {
         console.error(error);
         notify("success", "Registration successful locally. Firebase adminUsers could not be updated right now.");
-        showPanel("login");
+        window.location.replace("login.html");
         return;
       }
     }
     registerForm.reset();
     notify("success", "Registration successful: admin account created and saved to Firebase.");
-    showPanel("login");
+    window.location.replace("login.html");
   });
 
   loginForm.addEventListener("submit", (event) => {
@@ -225,88 +230,6 @@ async function syncFirebaseAdmins() {
   } catch (error) {
     console.error(error);
   }
-}
-
-registerForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const accounts = readAccounts();
-  const details = normalize(registerForm);
-  const validation = validateAdmin(details);
-
-  if (validation) {
-    notify("error", `Registration unsuccessful: ${validation}`);
-    return;
-  }
-
-  if (accounts.length >= MAX_ADMINS) {
-    notify("error", "Registration unsuccessful: the system only allows up to 5 admins.");
-    return;
-  }
-
-  if (accounts.some((account) => account.email === details.email)) {
-    notify("error", "Registration unsuccessful: an admin with this Gmail address already exists.");
-    return;
-  }
-
-  const account = {
-    ...details,
-    id: `admin-${Date.now()}`,
-    createdAt: new Date().toISOString()
-  };
-
-  accounts.push(account);
-  writeAccounts(accounts);
-  try {
-    await recordAdminUser(account);
-  } catch (error) {
-    console.error(error);
-    notify("success", "Registration successful locally. Firebase adminUsers could not be updated right now.");
-    showPanel("login");
-    return;
-  }
-  registerForm.reset();
-  notify("success", "Registration successful: admin account created and saved to Firebase.");
-  showPanel("login");
-});
-
-loginForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const details = normalize(loginForm);
-  const validation = validateAdmin(details);
-
-  if (validation) {
-    notify("error", `Login unsuccessful: ${validation}`);
-    loginForm.reset();
-    return;
-  }
-
-  const admin = readAccounts().find((account) =>
-    account.firstName.toLowerCase() === details.firstName.toLowerCase()
-    && account.secondName.toLowerCase() === details.secondName.toLowerCase()
-    && account.email === details.email
-    && account.password === details.password
-  );
-
-  if (!admin) {
-    notify("error", "Login unsuccessful: First Name, Second Name, Email address, and Password must match a registered admin.");
-    loginForm.reset();
-    return;
-  }
-
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-    id: admin.id,
-    firstName: admin.firstName,
-    secondName: admin.secondName,
-    email: admin.email,
-    loggedInAt: new Date().toISOString()
-  }));
-  window.location.href = "dashboard.html";
-});
-
-showLoginBtn.addEventListener("click", () => showPanel("login"));
-showRegisterBtn.addEventListener("click", () => showPanel("register"));
-
-syncFirebaseAdmins().finally(() => showPanel(readAccounts().length ? "login" : "register"));
 }
 
 // Initialize when DOM is ready
