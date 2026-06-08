@@ -8,10 +8,7 @@ export default {
   base: "./",
   build: {
     rollupOptions: {
-      input: {
-        app: resolve(__dirname, "index.html"),
-        login: resolve(__dirname, "mobile-login.html")
-      }
+      input: resolve(__dirname, "index.html")
     }
   },
   server: {
